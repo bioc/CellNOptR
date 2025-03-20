@@ -2,7 +2,7 @@ Package: CellNOptR
 Type: Package
 Title: Training of boolean logic models of signalling networks using prior
     knowledge networks and perturbation data
-Version: 1.53.0
+Version: 1.53.1
 Date: 2022-03-16
 Authors@R: c(
     person(given = "Thomas",
@@ -34,7 +34,7 @@ Depends:
     graph,
     methods,
     RCurl,
-    Rgraphviz,
+    Rgraphviz (<= 2.50.0),
     XML,
     ggplot2,
     rmarkdown
