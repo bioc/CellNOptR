@@ -46,7 +46,7 @@ model2sif<-function(model,optimRes=NA,writeSif=FALSE, filename="Model"){
 		inpSign<-apply(model$notMat,2,isNeg)
 		inpSign<-!inpSign
 		inpSign[inpSign]<-1
-		inpSign[!inpSign]<--1
+		inpSign[!inpSign]<- -1
     
 		sifFile<-cbind(reacInput,inpSign,reacOutput)
     sifFile<-sifFile[BStimes==1,]
@@ -64,7 +64,7 @@ model2sif<-function(model,optimRes=NA,writeSif=FALSE, filename="Model"){
 				  if(length(reacInput[[i]]) == 1){
             tmp<-matrix(0,nrow=1,ncol=3)
 					  tmp[1,1]<-reacInput[[i]]
-					  tmp[1,3]<-reacOutput[i]
+					  tmp[1,3]<-reacOutput[[i]]
 					  tmp[1,2]<-ifelse(
 						  any(model$notMat[,i] == 1),-1,1)
               sifFile<-rbind(sifFile,tmp)
@@ -82,7 +82,7 @@ model2sif<-function(model,optimRes=NA,writeSif=FALSE, filename="Model"){
 							}
 						tmp<-matrix(0,nrow=1,ncol=3)	
 						tmp[1,1]<-paste("and",nANDs,sep="")
-						tmp[1,3]<-reacOutput[i]
+						tmp[1,3]<-reacOutput[[i]]
 						tmp[1,2]<-1
             sifFile<-rbind(sifFile,tmp)
 						
