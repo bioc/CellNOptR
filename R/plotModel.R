@@ -279,9 +279,8 @@ plotModel <- function(model, CNOlist=NULL, bString=NULL, indexIntegr=NULL,
 			indices = lapply(names(edgeAttrs$color),  f) == TRUE
 			edgeAttrs$color[indices] <-NULL
 			edgeAttrs$label[indices] <-NULL
-			edgeAttrs$lty[indices] <-NULL
+			edgeAttrs$style[indices] <-NULL
 			edgeAttrs$arrowhead[indices] <-NULL
-			edgeAttrs$penwidth[indices] <-NULL
 		}
 	}
 	# we must rebuild the edges attributes
@@ -298,7 +297,7 @@ plotModel <- function(model, CNOlist=NULL, bString=NULL, indexIntegr=NULL,
 	fontsize=graphvizParams$fontsize
 	attrs <- list(
 		node=list(fontsize=fontsize,fontname="Helvetica",style="filled,bold"),
-		edge=list(style="solid",penwidth=1,weight="1.0",arrowsize=graphvizParams$arrowsize,minlen=3),
+		edge=list(style="solid",weight="1.0",arrowsize=graphvizParams$arrowsize,minlen=3),
 		graph=list(splines=TRUE,size=graphvizParams$size,bgcolor="white",ratio="fill",pad="0.5,0.5",dpi=72)
 	)
 	
@@ -333,7 +332,7 @@ plotModel <- function(model, CNOlist=NULL, bString=NULL, indexIntegr=NULL,
 	
 	edgeRenderAttrs  <- setEdgeRenderInfo(edgeAttrs,
 										  list(arrowhead=arrowhead2, head=v2, tail=v1,
-										  	 lwd=3, lty="solid"))
+										  	 lwd=3, style="solid"))
 	edgeRenderInfo(g) <- edgeRenderAttrs
 	
 	# Set the edge Rendering in Rgraphviz
@@ -360,7 +359,7 @@ plotModel <- function(model, CNOlist=NULL, bString=NULL, indexIntegr=NULL,
 			nodeRenderInfo(x) <- nodeRenderAttrs
 		}
 		#edgeRenderInfo(x) <- edgeRenderAttrs
-		edgeAttrs$lty=NULL    # why ?
+		edgeAttrs$style=NULL    # why ?
 		toDot(copyg, output_dot, nodeAttrs=nodeAttrs,edgeAttrs=edgeAttrs,attrs=attrs, recipEdges=recipEdges)
 		
 		# bug introduced in Rgraphviz 1.34 that set node attributes border.lwd
@@ -388,7 +387,7 @@ plotModel <- function(model, CNOlist=NULL, bString=NULL, indexIntegr=NULL,
 		}
 		
 		# and save into dot file.
-		toDot(copyg, output_dot, nodeAttrs=nodeAttrs, subGList=clusters,
+		toDot(graph=copyg, filename = output_dot, nodeAttrs=nodeAttrs, subGList=clusters,
 			  attrs=attrs, recipEdges=recipEdges, edgeAttrs=edgeAttrs)
 		# bug introduced in Rgraphviz 1.34 that set node attributes border.lwd
 		# and border.color that are not understood by dot. Best solution is to
@@ -744,7 +743,7 @@ createEdgeAttrs <- function(v1, v2, edges, BStimes ,Integr, user_edgecolor,
 	}
 	
 	edgeAttrs <- list(color=edgecolor,arrowhead=arrowhead,
-					  penwidth=edgewidth,label=label, lty=lty)
+					  label=label, style=lty)
 	
 	return(list(toremove=toremove, edgeAttrs=edgeAttrs))
 }
@@ -772,7 +771,7 @@ setNodeRenderInfo <- function(nodeAttrs, extraAttrs)
 		fill=nodeAttrs$fillcolor,
 		col=nodeAttrs$color,
 		style=nodeAttrs$style,
-		lty=extraAttrs$lty,
+		style=extraAttrs$style,
 		lwd=extraAttrs$lwd,
 		label=nodeAttrs$label,
 		shape=nodeAttrs$shape,
@@ -794,7 +793,7 @@ setEdgeRenderInfo <- function(edgeAttrs, extraAttrs)
 		tail=extraAttrs$v1,
 		label=edgeAttrs$label,
 		lwd=extraAttrs$lwd,
-		lty=extraAttrs$lty    #this fails in some cases even with version >=1.33.1
+		style=extraAttrs$style    #this fails in some cases even with version >=1.33.1
 	)
 	return(attrs)
 }
